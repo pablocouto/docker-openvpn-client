@@ -6,8 +6,6 @@ RUN apk add --update \
 
 VOLUME ["/etc/opt/container/"]
 
-ADD routes.sh /opt/container/bin/routes.sh
-
 ENTRYPOINT ["/usr/sbin/openvpn", "--cd", "/etc/opt/container/"]
 
-CMD ["--config", "vpn.conf", "--route-up", "/opt/container/bin/routes.sh"]
+CMD ["--config", "vpn.conf"]

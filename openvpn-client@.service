@@ -10,7 +10,8 @@ ExecStartPre=-/usr/bin/docker rm openvpn-client.%i.service
 
 ExecStart=/usr/bin/docker run --name openvpn-client.%i.service \
           --cap-add=NET_ADMIN --device /dev/net/tun --net=host \
-          -v /etc/openvpn/%i.conf:/etc/opt/container/vpn.conf \
+          -v /etc/openvpn/%i/:/etc/opt/container/ \
+          -v /etc/iproute2/rt_tables:/etc/iproute2/rt_tables \
           pablocouto/docker-openvpn-client
 
 ExecStop=/usr/bin/docker stop openvpn-client.%i.service
