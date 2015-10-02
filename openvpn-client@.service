@@ -1,0 +1,20 @@
+[Unit]
+Description=OpenVPN client
+After=network-online.target iptables-restore.service docker.service
+Requires=network-online.target docker.service
+
+[Service]
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker kill openvpn-c.%i.service
+ExecStartPre=-/usr/bin/docker rm openvpn-c.%i.service
+
+ExecStart=/usr/bin/docker run \
+          --cap-add=NET_ADMIN --device /dev/net/tun --name openvpn-c.%i.service \
+          -v /etc/openvpn/%i.conf:/etc/opt/container/vpn.conf \
+          pablocouto/docker-openvpn-client
+
+ExecStop=/usr/bin/docker stop openvpn-c.%i.service
+ExecStop=/usr/bin/docker rm openvpn-c.%i.service
+
+[Install]
+WantedBy=multi-user.target
